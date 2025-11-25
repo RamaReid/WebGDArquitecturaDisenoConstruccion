@@ -69,15 +69,48 @@
 
   <script src="../js/loader.js"></script>
   <script>
-    // Script de control propuesto (cierre automático tras load)
-    window.addEventListener('load', function(){
-      const loader = document.getElementById('loader-wrapper');
-      if(!loader) return;
-      loader.classList.add('hidden');
-      document.body.classList.remove('loading');
-      if(window.loaderStopLoop) window.loaderStopLoop();
-      setTimeout(function(){ loader.remove(); }, 600);
-    });
+    (function(){
+      // Integración no invasiva: esperar a que la página cargue y al menos MIN_CYCLES completados
+      var MIN_CYCLES = 2;
+      var pageLoaded = false;
+      var cyclesCompleted = 0;
+      var loader = document.getElementById('loader-wrapper');
+
+      function tryDismissLoader(){
+        if(!loader) return;
+        if(pageLoaded && cyclesCompleted >= MIN_CYCLES){
+          loader.classList.add('hidden');
+          document.body.classList.remove('loading');
+          if(window.loaderStopLoop) window.loaderStopLoop();
+          // remove after transition (match scoped CSS transition 0.5s)
+          setTimeout(function(){ if(loader) loader.remove(); }, 600);
+        }
+      }
+
+      window.addEventListener('load', function(){
+        pageLoaded = true;
+        tryDismissLoader();
+      });
+
+      // Listen for end of the drawD animation on any element with .str5
+      var lastEls = document.querySelectorAll('.str5');
+      if(lastEls && lastEls.length){
+        lastEls.forEach(function(el){
+          el.addEventListener('animationend', function(e){
+            if(e && e.animationName === 'drawD'){
+              cyclesCompleted++;
+              tryDismissLoader();
+            }
+          });
+        });
+      } else {
+        // fallback: if no .str5 found, close on load after MIN_CYCLES simulated
+        window.addEventListener('load', function(){
+          cyclesCompleted = MIN_CYCLES;
+          tryDismissLoader();
+        });
+      }
+    })();
   </script>
 </body>
 </html>
