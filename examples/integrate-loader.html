@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Integración: Loader (ejemplo)</title>
+  <link rel="stylesheet" href="../css/loader.scoped.css" />
+  <style>
+    /* Estilos mínimos de ejemplo */
+    body { margin:0; font-family: sans-serif; }
+    main { padding: 2rem; }
+  </style>
+</head>
+<body class="loading">
+
+  <!-- Wrapper que cubre la página durante la carga -->
+  <div id="loader-wrapper">
+    <!-- Pega aquí el contenido completo del <svg> desde `loader.html` -->
+    <!-- Por ejemplo: -->
+    <!-- <svg viewBox="0 0 210 170" ...> ... </svg> -->
+    <div style="color:#fff; text-align:center;">Pegue el &lt;svg&gt; de `loader.html` dentro de este contenedor.</div>
+  </div>
+
+  <main>
+    <h1>Mi sitio</h1>
+    <p>Contenido de ejemplo detrás del loader.</p>
+    <img src="https://picsum.photos/800/400" alt="placeholder image">
+  </main>
+
+  <script src="../js/loader.js"></script>
+  <script>
+    // Script de control propuesto (cierre automático tras load)
+    window.addEventListener('load', function(){
+      const loader = document.getElementById('loader-wrapper');
+      if(!loader) return;
+      loader.classList.add('hidden');
+      document.body.classList.remove('loading');
+      if(window.loaderStopLoop) window.loaderStopLoop();
+      setTimeout(function(){ loader.remove(); }, 600);
+    });
+  </script>
+</body>
+</html>
