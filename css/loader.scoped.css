@@ -1,0 +1,29 @@
+/* Scoped loader CSS for integration wrapper
+   Use this file when embedding the loader inside #loader-wrapper in your site
+   This avoids global rules that would affect the host page. */
+
+#loader-wrapper {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: #020280; /* match loader background */
+  z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.5s ease, visibility 0.5s;
+}
+
+#loader-wrapper.hidden {
+  opacity: 0; visibility: hidden; pointer-events: none;
+}
+
+/* Ensure loader SVG scales only inside the wrapper */
+#loader-wrapper svg {
+  width: min(95vw, 900px);
+  height: auto;
+  overflow: visible;
+  transform: scale(0.5);
+  transform-origin: center center;
+  display:block;
+}
+
+/* Optional: prevent body scroll while loader is active */
+body.loading { overflow: hidden; }
