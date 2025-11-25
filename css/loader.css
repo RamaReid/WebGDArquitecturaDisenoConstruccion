@@ -1,0 +1,43 @@
+/* Fondo de la página */
+html, body { height:100%; margin:0; }
+/* Fondo solicitado: azul profundo */
+body { background: #020280; display:flex; align-items:center; justify-content:center; }
+
+/* SVG sizing */
+svg { width: min(95vw, 900px); height: auto; overflow: visible; transform: scale(0.5); transform-origin: center center; display:block; }
+
+/* === TRAZOS === */
+/* Hacer las líneas más visibles (como en GDanimado.html) */
+.str0 { stroke: #C4C3C4; stroke-linecap: round; stroke-linejoin: round; stroke-miterlimit: 22.9256; stroke-dasharray: 5 3 1 3; fill: none; }
+.str1 { stroke: #C4C3C4; stroke-linecap: round; stroke-linejoin: round; stroke-miterlimit: 22.9256; fill: none; }
+/* Trazo gris técnico: más tenue para no competir con el rojo */
+.str2 { stroke: #D0D0D0; stroke-width: 0.75; stroke-linecap: round; stroke-linejoin: round; stroke-miterlimit: 22.9256; fill: none; stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawGrey 10s ease-out forwards; animation-delay: 2.8s; }
+/* G: iniciar poco después del trazo gris; D: después de G */
+.str3 { stroke: #FF0009; stroke-width: 0.75; stroke-linecap: round; stroke-linejoin: round; stroke-miterlimit: 22.9256; fill: none; stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawGinner 2.5s ease-in-out forwards; animation-delay: 3s; }
+.str4 { stroke: #FF0009; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; stroke-miterlimit: 22.9256; fill: none; stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawGouter 3s ease-in-out forwards; animation-delay: 3.5s; }
+.str5 { stroke: #FFFFFF; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; stroke-miterlimit: 22.9256; fill: none; stroke-dasharray: 3000; stroke-dashoffset: 3000; animation: drawD 3s ease-in-out forwards; animation-delay: 6s; }
+
+/* === ANIMACIONES (transform para compatibilidad SVG) === */
+/* Move masks from their initial x/y to 0 (rect initial positions are set via x/y) */
+@keyframes revealX { from { transform: translateX(0); } to { transform: translateX(210px); } }
+@keyframes revealY { from { transform: translateY(0); } to { transform: translateY(170px); } }
+@keyframes revealLeftToRight { from { transform: translateX(0); } to { transform: translateX(210px); } }
+@keyframes revealTopToBottom { from { transform: translateY(0); } to { transform: translateY(170px); } }
+@keyframes revealRightToLeft { from { transform: translateX(0); } to { transform: translateX(-210px); } }
+@keyframes revealBottomToTop { from { transform: translateY(0); } to { transform: translateY(-170px); } }
+
+@keyframes drawGrey   { to { stroke-dashoffset: 0; } }
+@keyframes drawGinner { to { stroke-dashoffset: 0; } }
+@keyframes drawGouter { to { stroke-dashoffset: 0; } }
+@keyframes drawD      { to { stroke-dashoffset: 0; } }
+
+/* Asegurar transform en rects de máscara */
+#rectX, #rectY, #rectTop, #rectRight, #rectBottom, #rectLeft { transform-box: fill-box; transform-origin: 0 0; will-change: transform; }
+
+/* Asignación de animaciones (delay debe ir antes de fill-mode) */
+#rectX { animation: revealX 0.7s cubic-bezier(0.55,0.08,0.44,0.99) 0s forwards; }
+#rectY { animation: revealY 0.7s cubic-bezier(0.55,0.08,0.44,0.99) 0.6s forwards; }
+#rectTop    { animation: revealLeftToRight 0.4s ease-in-out 1.4s forwards; }
+#rectRight  { animation: revealTopToBottom 0.4s ease-in-out 1.7s forwards; }
+#rectBottom { animation: revealRightToLeft 0.4s ease-in-out 2.0s forwards; }
+#rectLeft   { animation: revealBottomToTop 0.4s ease-in-out 2.3s forwards; }

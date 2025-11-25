@@ -1,0 +1,7 @@
+# Ignore the nested project folder (contains its own .git)
+hero-revista/
+
+# Common ignores
+node_modules/
+*.log
+.DS_Store
