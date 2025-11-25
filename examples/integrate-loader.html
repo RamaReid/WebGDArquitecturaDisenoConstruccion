@@ -70,7 +70,7 @@
   <script src="../js/loader.js"></script>
   <script>
     (function(){
-      // Integración no invasiva: esperar a que la página cargue y al menos MIN_CYCLES completados
+      // Robust integration: wait for window.load AND at least MIN_CYCLES finishes
       var MIN_CYCLES = 2;
       var pageLoaded = false;
       var cyclesCompleted = 0;
@@ -82,7 +82,6 @@
           loader.classList.add('hidden');
           document.body.classList.remove('loading');
           if(window.loaderStopLoop) window.loaderStopLoop();
-          // remove after transition (match scoped CSS transition 0.5s)
           setTimeout(function(){ if(loader) loader.remove(); }, 600);
         }
       }
@@ -92,24 +91,23 @@
         tryDismissLoader();
       });
 
-      // Listen for end of the drawD animation on any element with .str5
-      var lastEls = document.querySelectorAll('.str5');
-      if(lastEls && lastEls.length){
-        lastEls.forEach(function(el){
-          el.addEventListener('animationend', function(e){
-            if(e && e.animationName === 'drawD'){
+      // Use a delegated/document-level listener for animationend so we don't miss events
+      document.addEventListener('animationend', function(e){
+        try{
+          if(!e || e.animationName !== 'drawD') return;
+          // ensure the animated element is inside our loader wrapper
+          if(!loader) return;
+          var node = e.target;
+          while(node && node !== document){
+            if(node === loader){
               cyclesCompleted++;
               tryDismissLoader();
+              return;
             }
-          });
-        });
-      } else {
-        // fallback: if no .str5 found, close on load after MIN_CYCLES simulated
-        window.addEventListener('load', function(){
-          cyclesCompleted = MIN_CYCLES;
-          tryDismissLoader();
-        });
-      }
+            node = node.parentNode;
+          }
+        }catch(err){ /* ignore */ }
+      }, true);
     })();
   </script>
 </body>
