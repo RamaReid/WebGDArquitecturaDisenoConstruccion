@@ -61,11 +61,10 @@
     </svg>
   </div>
 
-  <main>
-    <h1>Mi sitio</h1>
-    <p>Contenido de ejemplo detrás del loader.</p>
-    <img src="https://picsum.photos/800/400" alt="placeholder image">
-  </main>
+  <!-- Hero fijo: nuevo fondo que reemplaza la foto genérica y el texto -->
+  <div id="hero" class="hero visible" role="img" aria-label="Fondo de portada"></div>
+
+  <main aria-hidden="true"></main>
 
   <script src="../js/loader.js"></script>
   <script>
@@ -79,6 +78,7 @@
       function tryDismissLoader(){
         if(!loader) return;
         if(pageLoaded && cyclesCompleted >= MIN_CYCLES){
+          // El hero ya está listo (clase .visible). Ocultamos el loader.
           loader.classList.add('hidden');
           document.body.classList.remove('loading');
           if(window.loaderStopLoop) window.loaderStopLoop();

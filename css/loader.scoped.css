@@ -27,3 +27,25 @@
 
 /* Optional: prevent body scroll while loader is active */
 body.loading { overflow: hidden; }
+
+/* Ensure main content is hidden while loading (safety) */
+body.loading main { visibility: hidden; }
+
+/* Hero full-screen background (the single image to display) */
+#hero.hero {
+  opacity: 1; /* visible by default under the loader */
+  transition: opacity 0.6s ease;
+  background-image: url('../background2.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  width: 100%;
+  /* dynamic viewport unit to handle mobile chrome */
+  height: calc(var(--vh, 1vh) * 100);
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 5000; /* below loader (9999) */
+  pointer-events: none;
+}
+
+#hero.hero.visible { opacity: 1; }
