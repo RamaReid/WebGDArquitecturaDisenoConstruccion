@@ -12,10 +12,15 @@ svg { width: min(95vw, 900px); height: auto; overflow: visible; transform: scale
 .str1 { stroke: #C4C3C4; stroke-linecap: round; stroke-linejoin: round; stroke-miterlimit: 22.9256; fill: none; }
 /* Trazo gris técnico: más tenue para no competir con el rojo */
 .str2 { stroke: #D0D0D0; stroke-width: 0.75; stroke-linecap: round; stroke-linejoin: round; stroke-miterlimit: 22.9256; fill: none; stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawGrey 10s ease-out forwards; animation-delay: 2.8s; }
-/* G: iniciar poco después del trazo gris; D: después de G */
-.str3 { stroke: #FF0009; stroke-width: 0.75; stroke-linecap: round; stroke-linejoin: round; stroke-miterlimit: 22.9256; fill: none; stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawGinner 2.5s ease-in-out forwards; animation-delay: 3s; }
-.str4 { stroke: #FF0009; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; stroke-miterlimit: 22.9256; fill: none; stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawGouter 3s ease-in-out forwards; animation-delay: 3s; }
-.str5 { stroke: #FFFFFF; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; stroke-miterlimit: 22.9256; fill: none; stroke-dasharray: 3000; stroke-dashoffset: 3000; animation: drawD 3s ease-in-out forwards; animation-delay: 6s; }
+/* G/D timings will be defined below (keep original grey timing above) */
+/* Timing coherente: unificar easing y adjust G/D only (leave grey as original above) */
+:root { --draw-easing: cubic-bezier(0.65,0,0.35,1); }
+
+/* G: ambos comienzan a la vez y usan el mismo easing y duración */
+.str3 { stroke: #FF0009; stroke-width: 0.75; stroke-linecap: round; stroke-linejoin: round; stroke-miterlimit: 22.9256; fill: none; stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawGinner 1.5s var(--draw-easing) forwards; animation-delay: 3s; }
+.str4 { stroke: #FF0009; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; stroke-miterlimit: 22.9256; fill: none; stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: drawGouter 1.5s var(--draw-easing) forwards; animation-delay: 3s; }
+/* D: empieza 50ms antes del fin de la G para evitar corte perceptual; duración 3/4 de la original */
+.str5 { stroke: #FFFFFF; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; stroke-miterlimit: 22.9256; fill: none; stroke-dasharray: 3000; stroke-dashoffset: 3000; animation: drawD 1.8s var(--draw-easing) forwards; animation-delay: 4s; }
 
 /* === ANIMACIONES (transform para compatibilidad SVG) === */
 /* Move masks from their initial x/y to 0 (rect initial positions are set via x/y) */
