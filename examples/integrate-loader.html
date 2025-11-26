@@ -4,7 +4,6 @@
   <meta charset="utf-8" />
   <title>Integración: Loader (ejemplo)</title>
   <link rel="stylesheet" href="../css/loader.css" />
-  <link rel="stylesheet" href="../css/loader.scoped.css" />
   <style>
     /* Estilos mínimos de ejemplo */
     body { margin:0; font-family: sans-serif; }
@@ -61,56 +60,6 @@
     </svg>
   </div>
 
-  <main>
-    <h1>Mi sitio</h1>
-    <p>Contenido de ejemplo detrás del loader.</p>
-    <img src="https://picsum.photos/800/400" alt="placeholder image">
-  </main>
-
   <script src="../js/loader.js"></script>
-  <script>
-    (function(){
-      // Integración no invasiva: esperar a que la página cargue y al menos MIN_CYCLES completados
-      var MIN_CYCLES = 2;
-      var pageLoaded = false;
-      var cyclesCompleted = 0;
-      var loader = document.getElementById('loader-wrapper');
-
-      function tryDismissLoader(){
-        if(!loader) return;
-        if(pageLoaded && cyclesCompleted >= MIN_CYCLES){
-          loader.classList.add('hidden');
-          document.body.classList.remove('loading');
-          if(window.loaderStopLoop) window.loaderStopLoop();
-          // remove after transition (match scoped CSS transition 0.5s)
-          setTimeout(function(){ if(loader) loader.remove(); }, 600);
-        }
-      }
-
-      window.addEventListener('load', function(){
-        pageLoaded = true;
-        tryDismissLoader();
-      });
-
-      // Listen for end of the drawD animation on any element with .str5
-      var lastEls = document.querySelectorAll('.str5');
-      if(lastEls && lastEls.length){
-        lastEls.forEach(function(el){
-          el.addEventListener('animationend', function(e){
-            if(e && e.animationName === 'drawD'){
-              cyclesCompleted++;
-              tryDismissLoader();
-            }
-          });
-        });
-      } else {
-        // fallback: if no .str5 found, close on load after MIN_CYCLES simulated
-        window.addEventListener('load', function(){
-          cyclesCompleted = MIN_CYCLES;
-          tryDismissLoader();
-        });
-      }
-    })();
-  </script>
 </body>
 </html>
