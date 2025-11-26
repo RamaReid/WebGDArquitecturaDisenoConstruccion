@@ -115,11 +115,11 @@ expand_less
     pointer-events: none; /* Para que al abrirse, se pueda clickear la web abajo */
 }
 
-/* CAPA 1: FONDO AZUL SOLIDO */
+#/* CAPA 1: FONDO AZUL SOLIDO */
 #loader-bg-layer {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: #020280;
+    background: var(--brand-blue); /* hex: #020280 */
     z-index: 1;
     /* Preparamos la máscara para el agujero */
     -webkit-mask-image: radial-gradient(circle at center, transparent 0%, black 0%);

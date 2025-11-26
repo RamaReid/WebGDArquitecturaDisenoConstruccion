@@ -28,7 +28,7 @@ expand_less
         #loader-wrapper {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: #020280; /* El mismo azul que el body del loader.css */
+            background: var(--brand-blue); /* El mismo azul (variable `--brand-blue`, hex #020280) */
             z-index: 9999; /* Se asegura de estar encima de todo */
             display: flex;
             align-items: center;
@@ -104,7 +104,7 @@ download
 content_copy
 expand_less
 /* EN loader.css ORIGINAL */
-body { background: #020280; display:flex; align-items:center; ... }
+/* body { background: var(--brand-blue); /* hex #020280 */ display:flex; align-items:center; ... } */
 
 Debes modificar o eliminar esa línea en loader.css, porque si no, cambiará el fondo y la alineación de tu sitio web real.
 
