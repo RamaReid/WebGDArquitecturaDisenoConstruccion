@@ -72,6 +72,12 @@
   <!-- Hero fijo: nuevo fondo que reemplaza la foto genérica y el texto -->
   <div id="hero" class="hero visible" role="img" aria-label="Fondo de portada"></div>
 
+  <!-- Controles de prueba (solo para desarrollo) -->
+  <div id="test-controls" style="position:fixed; right:1rem; top:1rem; z-index:99999; display:flex; gap:.5rem;">
+    <button id="btnCine">Trigger Cinematic Exit</button>
+    <button id="btnReveal">Trigger Radial Reveal (manual)</button>
+  </div>
+
   <main aria-hidden="true"></main>
 
   <script src="../js/loader.js"></script>
@@ -96,6 +102,7 @@
           loader.classList.add('hidden');
           document.body.classList.remove('loading');
           if(window.loaderStopLoop) window.loaderStopLoop();
+            console.log('[integrate-loader] startCinematicExit: loader loop stopped');
           setTimeout(function(){ if(loader) loader.remove(); }, 600);
         }
       }
@@ -263,12 +270,13 @@
 
         // Schedule the background reveal earlier and set its duration
         if(bg){
+          console.log('[integrate-loader] scheduling reveal: start=' + REVEAL_START + 'ms dur=' + REVEAL_DURATION + 'ms');
           _revealTimeout = setTimeout(function(){
             try{ bg.style.animationDuration = (REVEAL_DURATION) + 'ms'; }catch(e){}
-            // add the class to the root so the selector .anim-open-hole #loader-bg-layer matches
-            root.classList.add('anim-open-hole');
-            // hide background after the reveal completes
-            setTimeout(function(){ if(bg) bg.style.display = 'none'; }, REVEAL_DURATION + 200);
+            // NOTE: previously we added the class 'anim-open-hole' and hid the bg here.
+            // That behavior is removed because the CSS clip-path reveal was disabled
+            // and we don't want the PNG to be revealed automatically without the SVG mask.
+            console.log('[integrate-loader] reveal scheduled but CSS reveal disabled; no automatic hide will run');
           }, REVEAL_START);
         }
 
@@ -302,13 +310,16 @@
             }catch(e){}
 
             root.classList.add('anim-drop');
+            console.log('[integrate-loader] starting physicsDrop');
             // run a physics-driven drop (gravity) using the current elevated position as start
             physicsDrop(null, 900).then(function(){
+              console.log('[integrate-loader] physicsDrop completed');
               // 3. Stabilize and open hole + ripples
               root.classList.remove('anim-drop');
               // start a slow bobbing to settle
               modulateBobbing(0.28, 2600);
               if(ripples) ripples.classList.add('anim-ripples');
+              console.log('[integrate-loader] ripples class added');
 
               // reveal page content
               document.body.classList.remove('loading');
@@ -343,6 +354,28 @@
       }
 
       window.startCinematicExit = startCinematicExit;
+
+      // Helper: try to compute logo center and call window.startRadialReveal if present
+      function startRadialRevealFromLogo(opts){
+        opts = opts || {};
+        var svg = document.querySelector('#loader-logo-layer svg');
+        if(!svg){ console.warn('[integrate-loader] no svg found for radial origin'); return; }
+        // get bounding rect of the svg (logo) relative to viewport
+        var rect = svg.getBoundingClientRect();
+        var stage = document.documentElement; // page root
+        // compute center percent relative to viewport
+        var cx = ((rect.left + rect.width/2) - 0) / (window.innerWidth) * 100;
+        var cy = ((rect.top + rect.height/2) - 0) / (window.innerHeight) * 100;
+        console.log('[integrate-loader] radial origin percent:', cx.toFixed(1), cy.toFixed(1));
+        if(window.startRadialReveal){
+          window.startRadialReveal({ duration: opts.duration || 3000, origin: { x: cx, y: cy } });
+        } else {
+          console.warn('[integrate-loader] startRadialReveal not found on window');
+        }
+      }
+
+      // Expose helper for manual testing
+      window.startRadialRevealFromLogo = startRadialRevealFromLogo;
     })();
   </script>
 </body>

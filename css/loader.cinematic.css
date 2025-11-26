@@ -44,7 +44,7 @@
 .anim-elevate #loader-logo-layer svg { animation: elevateLogo 1.5s cubic-bezier(0.45,0,0.55,1) forwards; }
 .anim-drop #loader-logo-layer svg { animation: dropLogo 0.4s cubic-bezier(0.75,0,1,1) forwards; }
 .anim-stabilize #loader-logo-layer svg { animation: floatingBob 2.6s cubic-bezier(0.36,0,0.66,-0.56) infinite normal; }
-.anim-open-hole #loader-bg-layer { animation: expandHoleClip 3s cubic-bezier(0.19,1,0.22,1) forwards; }
+.anim-open-hole #loader-bg-layer { }
 
 /* Keyframes */
 @keyframes elevateLogo {
@@ -79,21 +79,7 @@
   }
 }
 
-/* More compatible radial reveal that animates clip-path (widely supported)
-   We prefer clip-path because animating gradients/mask-image is unreliable
-   across browsers. JS will set the animation-duration dynamically when needed. */
-@keyframes expandHoleClip {
-  0% {
-    -webkit-clip-path: circle(0% at 50% 50%);
-    clip-path: circle(0% at 50% 50%);
-    opacity: 1;
-  }
-  100% {
-    -webkit-clip-path: circle(150% at 50% 50%);
-    clip-path: circle(150% at 50% 50%);
-    opacity: 0;
-  }
-}
+/* Clip-path based reveal removed: using SVG-mask JS-driven reveal instead. */
 @keyframes rippleEffect {
   0% { transform: translate(-50%,-50%) scale(0); opacity: 0.9; }
   10% { opacity: 0.65; }
