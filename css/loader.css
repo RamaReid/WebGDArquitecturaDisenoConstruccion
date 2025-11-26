@@ -1,7 +1,8 @@
 /* Fondo de la página */
 html, body { height:100%; margin:0; }
 /* Fondo solicitado: azul profundo */
-body { background: #020280; display:flex; align-items:center; justify-content:center; }
+:root { --brand-blue: #020280; }
+body { background: var(--brand-blue); display:flex; align-items:center; justify-content:center; }
 
 /* SVG sizing */
 svg { width: min(95vw, 900px); height: auto; overflow: visible; transform: scale(0.5); transform-origin: center center; display:block; }
